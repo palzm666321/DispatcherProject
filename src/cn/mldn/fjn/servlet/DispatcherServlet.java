@@ -1,14 +1,23 @@
 package cn.mldn.fjn.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,29 +26,57 @@ import javax.servlet.http.HttpServletResponse;
 import cn.mldn.fjn.web.RequestUriUtil;
 
 @SuppressWarnings("serial")
-@WebServlet("*.action")
-@WebFilter("/pages/back/admin/emp/*")
+@WebServlet(loadOnStartup=0,urlPatterns={"*.action"})
+@WebFilter(urlPatterns= {"/pages/back/admin/emp/*"},initParams= {@WebInitParam(name="actionBaseName",value="cn.mldn.fjn.resource.action")})
 public class DispatcherServlet extends HttpServlet implements Filter{
+	private static Map<String,Class<?>> ActionMap=new HashMap<String,Class<?>>();
 
-	
-	
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		String baseName=filterConfig.getInitParameter("actionBaseName");
+		String basePath=filterConfig.getServletContext().getRealPath("/")+"WEB-INF"+File.separator+"classes"+File.separator+baseName.replaceAll("\\.", "/")+".properties";
+		Properties pro=new Properties();
+		try {
+			pro.load(new FileInputStream(basePath));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Iterator<Entry<Object, Object>> it = pro.entrySet().iterator();
+		if(pro.size()>0) {
+			try{
+				while(it.hasNext()) {
+					Entry<Object,Object> entry=it.next();
+					ActionMap.put(entry.getKey().toString(), Class.forName(entry.getValue().toString()));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String temp[]=RequestUriUtil.splitUri(request);
-		System.out.println(Arrays.toString(temp));
+		try {
+			Object actionObject=ActionMap.get(temp[0]).newInstance();
+			System.out.println(actionObject);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doPost(req, resp);
 	}
-	
+
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-			HttpServletRequest request=(HttpServletRequest)req;
-			request.setCharacterEncoding("UTF-8");
-			chain.doFilter(req, resp);
-			resp.setCharacterEncoding("UTF-8");
+		HttpServletRequest request=(HttpServletRequest)req;
+		request.setCharacterEncoding("UTF-8");
+		chain.doFilter(req, resp);
+		resp.setCharacterEncoding("UTF-8");
 	}
 }
