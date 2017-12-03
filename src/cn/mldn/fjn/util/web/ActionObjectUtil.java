@@ -38,21 +38,24 @@ public class ActionObjectUtil {
 		//根据拆分的路径信息获取请求的反射Action对象
 		Object obj=this.actionMap.get(temp[0]).newInstance();
 		Method method=MethodUtil.getMethod(this.actionMap.get(temp[0]),temp[1]);
+		Object resultobj=null;
 		if(method.getParameterTypes().length==0) {//方法上没有定义参数
 			if("void".equals(method.getParameterTypes().toString())) {//方法返回类型是否为“void”
 				method.invoke(obj);
 				return "nopath";
-			}else {
-				Object resultobj=method.invoke(obj);
-				if(resultobj!=null) {
-					if(resultobj instanceof java.lang.String) { //返回的类型是字符串
-						return resultobj.toString();
-					}
-					if(resultobj instanceof ModelAndView) {
-						ModelAndView mav=(ModelAndView)resultobj;
-						return mav.getUri();
-					}
-				}
+			}else{
+				resultobj=method.invoke(obj);
+			}
+		}else {//以下有参数
+			resultobj=ParameterValueUtil.setActionMethodParameterValue(request, obj, method);
+		}
+		if(resultobj!=null) {
+			if(resultobj instanceof java.lang.String) { //返回的类型是字符串
+				return resultobj.toString();
+			}
+			if(resultobj instanceof ModelAndView) {
+				ModelAndView mav=(ModelAndView)resultobj;
+				return mav.getUri();
 			}
 		}
 		return null;

@@ -1,5 +1,7 @@
 package cn.mldn.fjn.action;
 
+import java.util.Date;
+
 import cn.mldn.fjn.util.web.ModelAndView;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
 
@@ -9,7 +11,11 @@ public class EmpAction {
 	 * 实现雇员数据追加前的控制方法
 	 * @return 设置跳转的处理路径
 	 */
-	public String addPre() {//做一个页面的跳转处理
+	public void add(String mid,long empno,String ename,double sal,Date hiredate,int age) {//做一个页面的跳转处理
+		System.out.println("雇员信息：mid="+mid+"，empno="+empno+"，ename="+ename+"，sal="+sal+"，hiredate="+hiredate+"，age="+age);
+	}
+	
+	public String addPre() {
 		return "/pages/back/admin/emp/emp_add.jsp";
 	}
 	

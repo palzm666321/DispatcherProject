@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.mldn.fjn.util.web.ActionObjectUtil;
+import cn.mldn.fjn.util.web.RequestUriUtil;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
-import cn.mldn.fjn.web.RequestUriUtil;
 
 @SuppressWarnings("serial")
 @WebServlet(loadOnStartup=0,urlPatterns={"*.action"},initParams= {@WebInitParam(name="actionBaseName",value="cn.mldn.fjn.resource.action")})
@@ -79,7 +79,7 @@ public class DispatcherServlet extends HttpServlet implements Filter{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		this.doPost(req, resp);
+		this.doGet(req, resp);
 	}
 
 	@Override

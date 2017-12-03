@@ -1,4 +1,4 @@
-package cn.mldn.fjn.web;
+package cn.mldn.fjn.util.web;
 
 import javax.servlet.http.HttpServletRequest;
 
