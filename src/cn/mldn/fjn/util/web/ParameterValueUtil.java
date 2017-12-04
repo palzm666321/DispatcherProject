@@ -35,10 +35,10 @@ public class ParameterValueUtil {
 		for(int i=0;i<paramNames.length;i++) {
 			try {
 				if(isBasic(types[i].getName())) {//普通类型
-					String value=request.getParameter(paramNames[i]);
+					String value=ServletObjectUtil.getTHREAD_PARAMETER().getParameter(paramNames[i]);
 					values[i]=DataConverterUtil.converter(value, types[i].getName());
 				}else if(isArray(types[i].getSimpleName())){
-					String value[]=request.getParameterValues(paramNames[i]);//按照数组进行处理
+					String value[]=ServletObjectUtil.getTHREAD_PARAMETER().getParameterValues(paramNames[i]);//按照数组进行处理
 					values[i]=DataConverterUtil.converterArray(value, types[i].getSimpleName());
 				}else {//现在不是一个普通类型，可能是vo类
 					//获取vo的类型，获取vo类型之后就可以利用反射进行实例化了

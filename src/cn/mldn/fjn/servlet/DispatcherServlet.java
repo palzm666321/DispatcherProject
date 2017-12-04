@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.mldn.fjn.util.ResourceUtil;
 import cn.mldn.fjn.util.action.ActionResourceUtil;
 import cn.mldn.fjn.util.web.ActionObjectUtil;
+import cn.mldn.fjn.util.web.ParameterUtil;
 import cn.mldn.fjn.util.web.ParameterValidatorUtil;
 import cn.mldn.fjn.util.web.RequestUriUtil;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
@@ -64,6 +65,7 @@ public class DispatcherServlet extends HttpServlet implements Filter{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletObjectUtil.setTHREAD_REQUEST(request);
 		ServletObjectUtil.setTHREAD_RESPONSE(response);
+		ServletObjectUtil.setTHREAD_PARAMETER(new ParameterUtil(request,"/tmp"));
 		String temp[]=RequestUriUtil.splitUri(request);
 		String path=null;//定义要跳转的处理路径
 		String validateRule=null;//获取验证规则

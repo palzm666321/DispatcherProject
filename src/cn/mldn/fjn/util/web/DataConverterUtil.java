@@ -21,7 +21,7 @@ public class DataConverterUtil {
 			for(int i=0;i<fields.length;i++) {
 				String paramName=fields[i].getName();
 				Method method=voClass.getMethod("set"+StringUtils.initcap(paramName),fields[i].getType());
-				method.invoke(obj,converter(ServletObjectUtil.getTHREAD_REQUEST().getParameter(paramName),fields[i].getType().getName()));
+				method.invoke(obj,converter(ServletObjectUtil.getTHREAD_PARAMETER().getParameter(paramName),fields[i].getType().getName()));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

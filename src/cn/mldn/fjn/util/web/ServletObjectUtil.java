@@ -10,6 +10,7 @@ public class ServletObjectUtil {
 	private static ServletContext context;
 	private static ThreadLocal<HttpServletRequest> THREAD_REQUEST=new ThreadLocal<HttpServletRequest>();
 	private static ThreadLocal<HttpServletResponse> THREAD_RESPONSE=new ThreadLocal<HttpServletResponse>();
+	private static ThreadLocal<ParameterUtil> THREAD_PARAMETER=new ThreadLocal<ParameterUtil>();
 	public static ServletConfig getConfig() {
 		return config;
 	}
@@ -33,6 +34,12 @@ public class ServletObjectUtil {
 	}
 	public static void setTHREAD_RESPONSE(HttpServletResponse response) {
 		THREAD_RESPONSE.set(response);
+	}
+	public static ParameterUtil getTHREAD_PARAMETER() {
+		return THREAD_PARAMETER.get();
+	}
+	public static void setTHREAD_PARAMETER(ParameterUtil parameter) {
+		THREAD_PARAMETER.set(parameter);
 	}
 	public static void close() {
 		THREAD_REQUEST.remove();

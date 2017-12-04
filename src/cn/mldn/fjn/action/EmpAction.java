@@ -39,6 +39,10 @@ public class EmpAction {
 		System.out.println("【雇员增加】雇员兴趣="+Arrays.toString(inst));
 		System.out.println("【雇员增加】雇员权限="+Arrays.toString(actid));
 		System.out.println(vo);
+		String fileName=ServletObjectUtil.getTHREAD_PARAMETER().createUploadFileName("photo").get(0);
+		String filePath=ServletObjectUtil.getContext().getRealPath("/upload/emp/photo/")+fileName;
+		System.out.println("新的图片名称："+filePath);
+		ServletObjectUtil.getTHREAD_PARAMETER().saveUploadFile("photo", filePath);
 		return mav;
 	}
 	

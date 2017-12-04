@@ -35,7 +35,7 @@ public class ParameterValidatorUtil {
 	 * @return 验证通过返回true，否则返回false
 	 */
 	private boolean validateParam(String paramName,String rule) {
-		String val=ServletObjectUtil.getTHREAD_REQUEST().getParameter(paramName);//获得请求参数信息
+		String val=ServletObjectUtil.getTHREAD_PARAMETER().getParameter(paramName);//获得请求参数信息
 		//1、给出的是参数名称，那么必须一句参数名称获得参数内容
 		if("string".equalsIgnoreCase(rule)) {//进行字符串验证
 			if(!this.validateString(val)) {//没有通过验证
@@ -68,13 +68,13 @@ public class ParameterValidatorUtil {
 			}
 		}
 		if("string[]".equalsIgnoreCase(rule)) {//进行字符串验证
-			String vals[]=ServletObjectUtil.getTHREAD_REQUEST().getParameterValues(paramName);
+			String vals[]=ServletObjectUtil.getTHREAD_PARAMETER().getParameterValues(paramName);
 			if(!this.validateStringArray(vals)) {//没有通过验证
 				this.errors.put(paramName, ActionResourceUtil.getMessage("validator.string.error"));
 			}
 		}
 		if("long[]".equalsIgnoreCase(rule)) {//进行字符串验证
-			String vals[]=ServletObjectUtil.getTHREAD_REQUEST().getParameterValues(paramName);
+			String vals[]=ServletObjectUtil.getTHREAD_PARAMETER().getParameterValues(paramName);
 			if(!this.validateLongArray(vals)) {//没有通过验证
 				this.errors.put(paramName, ActionResourceUtil.getMessage("validator.long.error"));
 			}
