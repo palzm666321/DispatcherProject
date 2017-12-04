@@ -63,6 +63,12 @@ public class DispatcherServlet extends HttpServlet implements Filter{
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getServletContext().getAttribute("basePath")==null) {
+			String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+			request.getServletContext().setAttribute("basePath", basePath+"/");
+			request.getServletContext().setAttribute("basePath2", basePath);
+		}
+		
 		ServletObjectUtil.setTHREAD_REQUEST(request);
 		ServletObjectUtil.setTHREAD_RESPONSE(response);
 		ServletObjectUtil.setTHREAD_PARAMETER(new ParameterUtil(request,"/tmp"));

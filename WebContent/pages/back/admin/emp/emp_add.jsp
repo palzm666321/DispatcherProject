@@ -5,9 +5,9 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	request.setCharacterEncoding("UTF-8");
-	String url=basePath+"pages/back/admin/emp/EmpAction!add.action";
+	String url="pages/back/admin/emp/EmpAction!add.action";
 %>
-<base href="<%=basePath%>">
+<base href="${basePath}">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

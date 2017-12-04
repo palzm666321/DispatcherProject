@@ -1,11 +1,13 @@
 package cn.mldn.fjn.action;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Map;
 
+import cn.mldn.fjn.service.impl.EmpServiceImpl;
 import cn.mldn.fjn.util.action.ActionResourceUtil;
 import cn.mldn.fjn.util.web.ModelAndView;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
+import cn.mldn.fjn.util.web.SplitPageUtil;
 import cn.mldn.fjn.vo.Emp;
 
 public class EmpAction {
@@ -54,10 +56,20 @@ public class EmpAction {
 		}
 	}
 	
-	public ModelAndView editPre() {//做一个增加前的跳转页面
-		//将跳转的页面信息设置到ModelAndView中
-		ModelAndView mav=new ModelAndView("/pages/back/admin/emp/emp_edit.jsp");
-		mav.addObject("msg", "www.mldn.com");//设置内容，避免了request.setAttribute
+//	public ModelAndView editPre() {//做一个增加前的跳转页面
+//		//将跳转的页面信息设置到ModelAndView中
+//		ModelAndView mav=new ModelAndView("/pages/back/admin/emp/emp_edit.jsp");
+//		mav.addObject("msg", "www.mldn.com");//设置内容，避免了request.setAttribute
+//		return mav;
+//	}
+	
+	public ModelAndView list() {//做一个最佳前的页面跳转处理
+		//将跳转的路径信息设置到ModelAndView之中
+		ModelAndView mav=new ModelAndView(ActionResourceUtil.getPage("emp.list.page"));
+		SplitPageUtil spu=new SplitPageUtil("雇员姓名：ename", "emp.list.action");
+		EmpServiceImpl empService=new EmpServiceImpl();
+		Map<String,Object> map=empService.list(spu.getColumn(), spu.getKeyWord(), spu.getCurrentPage(), spu.getLineSize());
+		mav.addObjectMap(map);
 		return mav;
 	}
 }
