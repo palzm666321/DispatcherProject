@@ -4,6 +4,7 @@ import java.util.Date;
 
 import cn.mldn.fjn.util.web.ModelAndView;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
+import cn.mldn.fjn.vo.Emp;
 
 public class EmpAction {
 	
@@ -19,6 +20,10 @@ public class EmpAction {
 		return "/pages/back/admin/emp/emp_add.jsp";
 	}
 	
+	public void add(String mid,Emp vo) {
+		System.out.println("【雇员增加】mid="+mid);
+		System.out.println(vo);
+	}
 	
 	public void print() {
 		try {

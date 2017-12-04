@@ -1,8 +1,35 @@
 package cn.mldn.fjn.util.web;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 
+import cn.mldn.fjn.util.StringUtils;
+
 public class DataConverterUtil {
+	
+	/**
+	 * 进行vo的实例化处理操作，同时设置请求参数
+	 * @param voClass 要执行的vo类型
+	 * @return 实例化的vo类
+	 */
+	public static Object converterVO(Class<?> voClass) {
+		Object obj=null;
+		try {
+			obj=voClass.newInstance();
+			Field[] fields=voClass.getDeclaredFields();
+			for(int i=0;i<fields.length;i++) {
+				String paramName=fields[i].getName();
+				Method method=voClass.getMethod("set"+StringUtils.initcap(paramName),fields[i].getType());
+				method.invoke(obj,converter(ServletObjectUtil.getTHREAD_REQUEST().getParameter(paramName),fields[i].getType().getName()));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	
 	
 	/**
 	 * 实现字符串与具体类型之间的转换处理操作

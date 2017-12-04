@@ -2,9 +2,9 @@ package cn.mldn.fjn.util.web;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javassist.ClassClassPath;
 import javassist.ClassPath;
 import javassist.ClassPool;
@@ -33,11 +33,22 @@ public class ParameterValueUtil {
 		//4、接受到所有的方法参数之后要经i选哪个参数的接受，接受参数同意使用request.getParamter()处理
 		System.out.println(request.getParameter(paramNames[1]));
 		for(int i=0;i<paramNames.length;i++) {
-			String value=request.getParameter(paramNames[i]);
-			values[i]=DataConverterUtil.converter(value, types[i].getName());
+			if(isBasic(types[i].getName())) {//普通类型
+				String value=request.getParameter(paramNames[i]);
+				values[i]=DataConverterUtil.converter(value, types[i].getName());
+			}else {//现在不是一个普通类型，可能是vo类
+				//获取vo的类型，获取vo类型之后就可以利用反射进行实例化了
+				values[i]=DataConverterUtil.converterVO(types[i]);
+			}
 		}
 		return actionMethod.invoke(actionObject, values);
 	}
+	
+	
+	public static boolean isBasic(String type) {
+		return "int".equals(type)||"java.lang.Integer".equals(type)||"double".equals(type)||"java.lang.Double".equals(type)||"java.lang.String".equals(type)||"java.util.Date".equals(type);
+	}
+	
 	
 	/**
 	 * 获取Action上方法的参数的名称信息，利用javassist开发包可以获取
