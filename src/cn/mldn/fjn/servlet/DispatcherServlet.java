@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.mldn.fjn.util.ResourceUtil;
+import cn.mldn.fjn.util.action.ActionResourceUtil;
 import cn.mldn.fjn.util.web.ActionObjectUtil;
+import cn.mldn.fjn.util.web.ParameterValidatorUtil;
 import cn.mldn.fjn.util.web.RequestUriUtil;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
 
@@ -63,24 +65,38 @@ public class DispatcherServlet extends HttpServlet implements Filter{
 		ServletObjectUtil.setTHREAD_REQUEST(request);
 		ServletObjectUtil.setTHREAD_RESPONSE(response);
 		String temp[]=RequestUriUtil.splitUri(request);
-		String path=null;
+		String path=null;//定义要跳转的处理路径
 		String validateRule=null;//获取验证规则
+		boolean flag=true;
 		try {//如果出现了错误，则表示验证规则可以不存在，或者本身路径有问题
-			ResourceUtil resUtil=new ResourceUtil("cn.mldn.resource.validation");
+			ResourceUtil resUtil=new ResourceUtil("cn.mldn.fjn.resource.validation");
 			validateRule=resUtil.get(temp[0]+"!"+temp[1]);
 		}catch(Exception e) {}
 		if(validateRule!=null) {//现在有规则，有规则就需要规则的验证处理
-			
+			ParameterValidatorUtil pvu=new ParameterValidatorUtil(validateRule);
+			if(!pvu.validate()) {//没有通过验证，需要将所有的错误提示信息发送给客户端
+				request.setAttribute("errors",pvu.getErrors());//保存所有的错误提示信息
+				//出现了错误之后应该进行一个路径的跳转处理操作，所有的跳转路径可以直接在page.properties中
+				path=ActionResourceUtil.getPage(temp[0]+"!"+temp[1]+".errorPage");
+				if(path==null) {//可能没有为单独的一个页面配置错误页
+					path=ActionResourceUtil.getPage("error.page");//使用公共错误页
+				}
+				flag=false;
+			}
 		}
-		try {
-			ActionObjectUtil actionObjectUtil=new ActionObjectUtil(actionMap,temp,request);
-			path=actionObjectUtil.handleAcation();
-		}catch(Exception e) {
-			e.printStackTrace();
+		if(flag) {
+			try {//在Servlet里面所关心的话题只有一个：返回的跳转路径
+				ActionObjectUtil actionObjectUtil=new ActionObjectUtil(actionMap,temp,request);
+				path=actionObjectUtil.handleAcation();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			ServletObjectUtil.close();
 		}
-		ServletObjectUtil.close();
 		if(path!=null) {
-			request.getRequestDispatcher(path).forward(request, response);
+			if(!"nopath".equals(path)) {
+				request.getRequestDispatcher(path).forward(request, response);
+			}
 		}else {
 			response.getWriter().println("ERROR REQUEST");
 		}

@@ -6,6 +6,6 @@
 <title>Insert title here</title>
 </head>
 <body>
- <h1>ERROR！</h1>
+ <h1>ERROR！${errors}</h1>
 </body>
 </html>

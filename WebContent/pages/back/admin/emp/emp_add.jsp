@@ -14,6 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h1>增加雇员信息、${errors}</h1>
 	<form action="<%=url%>" method="post">
 		操作用户：<input type="text" name="mid" value="mldnjava"/><br>
 		雇员编号：<input type="text" name="empno" value="7369"/><br>
