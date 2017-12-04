@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.mldn.fjn.util.ResourceUtil;
 import cn.mldn.fjn.util.web.ActionObjectUtil;
 import cn.mldn.fjn.util.web.RequestUriUtil;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
@@ -63,6 +64,14 @@ public class DispatcherServlet extends HttpServlet implements Filter{
 		ServletObjectUtil.setTHREAD_RESPONSE(response);
 		String temp[]=RequestUriUtil.splitUri(request);
 		String path=null;
+		String validateRule=null;//获取验证规则
+		try {//如果出现了错误，则表示验证规则可以不存在，或者本身路径有问题
+			ResourceUtil resUtil=new ResourceUtil("cn.mldn.resource.validation");
+			validateRule=resUtil.get(temp[0]+"!"+temp[1]);
+		}catch(Exception e) {}
+		if(validateRule!=null) {//现在有规则，有规则就需要规则的验证处理
+			
+		}
 		try {
 			ActionObjectUtil actionObjectUtil=new ActionObjectUtil(actionMap,temp,request);
 			path=actionObjectUtil.handleAcation();
