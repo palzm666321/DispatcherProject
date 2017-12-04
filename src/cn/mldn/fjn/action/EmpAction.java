@@ -1,5 +1,6 @@
 package cn.mldn.fjn.action;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import cn.mldn.fjn.util.web.ModelAndView;
@@ -12,16 +13,23 @@ public class EmpAction {
 	 * 实现雇员数据追加前的控制方法
 	 * @return 设置跳转的处理路径
 	 */
-	public void add(String mid,long empno,String ename,double sal,Date hiredate,int age) {//做一个页面的跳转处理
-		System.out.println("雇员信息：mid="+mid+"，empno="+empno+"，ename="+ename+"，sal="+sal+"，hiredate="+hiredate+"，age="+age);
-	}
+//	public void add(String mid,long empno,String ename,double sal,Date hiredate,int age) {//做一个页面的跳转处理
+//		System.out.println("雇员信息：mid="+mid+"，empno="+empno+"，ename="+ename+"，sal="+sal+"，hiredate="+hiredate+"，age="+age);
+//	}
 	
 	public String addPre() {
 		return "/pages/back/admin/emp/emp_add.jsp";
 	}
 	
-	public void add(String mid,Emp vo) {
+//	public void add(String mid,Emp vo) {
+//		System.out.println("【雇员增加】mid="+mid);
+//		System.out.println(vo);
+//	}
+	
+	public void add(String mid,Emp vo,String inst[],long actid[]) {//直接接收vo
 		System.out.println("【雇员增加】mid="+mid);
+		System.out.println("【雇员增加】雇员兴趣="+Arrays.toString(inst));
+		System.out.println("【雇员增加】雇员权限="+Arrays.toString(actid));
 		System.out.println(vo);
 	}
 	

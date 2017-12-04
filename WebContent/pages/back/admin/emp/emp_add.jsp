@@ -21,6 +21,12 @@
 		基本工资：<input type="text" name="sal" value="232.2"/><br>
 		雇佣日期：<input type="text" name="hiredate" value="1998-02-26 12:23:53"/><br>
 		雇员年龄：<input type="text" name="age" value="20"/><br>
+		雇员兴趣：<input type="checkbox" name="inst" value="唱歌">唱歌
+				<input type="checkbox" name="inst" value="跳舞">跳舞
+				<input type="checkbox" name="inst" value="看书">看书<br>
+		雇员权限：<input type="checkbox" name="actid" value="1">增加部门
+				<input type="checkbox" name="actid" value="2">部门列表
+				<input type="checkbox" name="actid" value="3">公告管理<br>
 		<input type="submit" value="提交"/>
 		<input type="reset" value="重置"/>
 	</form>

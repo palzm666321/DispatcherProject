@@ -28,7 +28,23 @@ public class DataConverterUtil {
 		}
 		return obj;
 	}
-	
+	/**
+	 * 将字符串数组进行指定格式的转换
+	 * @param value 字符串数组
+	 * @param type 转换类型
+	 * @return 转换后的数组参数
+	 */
+	public static Object converterArray(String value[],String type) {
+		Object result=value;
+		if("long[]".equals(type)||"java.lang.Long[]".equals(type)) {
+			long arr[]=new long[value.length];
+			for(int i=0;i<value.length;i++) {
+				arr[i]=Long.parseLong(value[i]);
+			}
+			result=arr;
+		}
+		return result;
+	}
 	
 	
 	/**
