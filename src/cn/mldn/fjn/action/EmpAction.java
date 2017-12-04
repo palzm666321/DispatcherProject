@@ -3,6 +3,7 @@ package cn.mldn.fjn.action;
 import java.util.Arrays;
 import java.util.Date;
 
+import cn.mldn.fjn.util.action.ActionResourceUtil;
 import cn.mldn.fjn.util.web.ModelAndView;
 import cn.mldn.fjn.util.web.ServletObjectUtil;
 import cn.mldn.fjn.vo.Emp;
@@ -17,8 +18,12 @@ public class EmpAction {
 //		System.out.println("雇员信息：mid="+mid+"，empno="+empno+"，ename="+ename+"，sal="+sal+"，hiredate="+hiredate+"，age="+age);
 //	}
 	
-	public String addPre() {
-		return "/pages/back/admin/emp/emp_add.jsp";
+	/**
+	 * 实现雇员数据追加前的控制方法
+	 * @return 设置跳转的处理路径
+	 */
+	public String addPre() {//做一个增加前的页面跳转处理
+		return ActionResourceUtil.getPage("emp.add.page");
 	}
 	
 //	public void add(String mid,Emp vo) {
@@ -26,11 +31,15 @@ public class EmpAction {
 //		System.out.println(vo);
 //	}
 	
-	public void add(String mid,Emp vo,String inst[],long actid[]) {//直接接收vo
+	public ModelAndView add(String mid,Emp vo,String inst[],long actid[]) {//直接接收vo
+		ModelAndView mav=new ModelAndView("/pages/plugins/forward.jsp");
+		mav.addObject("msg", ActionResourceUtil.getMessage("vo.add.success", "雇员"));
+		mav.addObject("url", ActionResourceUtil.getPage("emp.add.action"));
 		System.out.println("【雇员增加】mid="+mid);
 		System.out.println("【雇员增加】雇员兴趣="+Arrays.toString(inst));
 		System.out.println("【雇员增加】雇员权限="+Arrays.toString(actid));
 		System.out.println(vo);
+		return mav;
 	}
 	
 	public void print() {
